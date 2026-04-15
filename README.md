@@ -1,204 +1,80 @@
 # 🚀 FastAPI Machine Test
 
----
+This is a robust REST API built with *FastAPI, **MySQL, and **SQLAlchemy ORM*. It features a clean, modular architecture for managing a Product-Category catalog with full CRUD support and pagination.
 
-## 📌 Project Overview
+🌍 *Live Demo:* [https://fastapi-machine-test.onrender.com](https://fastapi-machine-test.onrender.com)  
+📄 *API Docs:* [https://fastapi-machine-test.onrender.com/docs](https://fastapi-machine-test.onrender.com/docs)
 
-This project is a REST API built using **FastAPI**, **MySQL**, and **SQLAlchemy ORM**.
-It provides complete CRUD operations for **Category** and **Product**, including:
+-----
 
-* Pagination using limit & offset
-* Relationship handling (Product → Category)
-* Clean architecture and modular structure
+## 🛠️ Quick Start (Local Setup)
 
----
+### 1\. Environment & Dependencies
 
-# ⚙️ Installation & Setup
-
-## 1️⃣ Create Virtual Environment
-
-```
+bash
+# Create and activate virtual environment
 python -m venv venv
-```
+source venv/bin/activate  # Mac/Linux
+venv\Scripts\activate     # Windows
 
-## 2️⃣ Activate Virtual Environment
-
-### Windows
-
-```
-venv\Scripts\activate
-```
-
-### Mac/Linux
-
-```
-source venv/bin/activate
-```
-
----
-
-## 3️⃣ Install Dependencies
-
-```
+# Install requirements
 pip install -r requirements.txt
-```
 
----
 
-## 4️⃣ Environment Configuration
+### 2\. Database & Config
 
-Create a `.env` file in the root directory:
+1.  *MySQL Setup:* Create a database named fastapi-machine.
+2.  *Environment File:* Create a .env file in the root:
+    env
+    DATABASE_URL=mysql+pymysql://root:your_password@localhost:3306/fastapi-machine
+    
 
-```
-DATABASE_URL=mysql+pymysql://root:your_password@localhost:3306/fastapi-machine
-```
+### 3\. Execution
 
----
-
-## 5️⃣ Database Setup
-
-Login to MySQL:
-
-```
-mysql -u root -p
-```
-
-Create database:
-
-```
-CREATE DATABASE fastapi-machine;
-```
-
----
-
-# ▶️ Run the Application
-
-Start the FastAPI server:
-
-```
+bash
 uvicorn app.main:app --reload
-```
 
----
 
-# 🌐 API Documentation
+-----
 
-* Swagger UI:
-  http://127.0.0.1:8000/docs
+## 📂 API Endpoints
 
-* Postman:
-  APIs tested using Postman collection
+### 🗂️ Categories
 
----
+  * POST /api/categories — Create new category
+  * GET /api/categories?page=1 — List categories (Paginated)
+  * GET /api/categories/{id} — Fetch specific category
+  * PUT /api/categories/{id} — Update category
+  * DELETE /api/categories/{id} — Remove category
 
-# 🧪 How to Test APIs
+### 📦 Products
 
-1. Start the server
-2. Open Swagger UI OR Postman
-3. Test APIs in this order:
+  * POST /api/products — Create new product
+  * GET /api/products?page=1 — List products (includes Category details)
+  * GET /api/products/{id} — Fetch specific product
+  * PUT /api/products/{id} — Update product
+  * DELETE /api/products/{id} — Remove product
 
-   * Create Category
-   * Create Product
-   * Fetch Data
-   * Update
-   * Delete
+-----
 
----
+## 🏗️ Technical Architecture
 
-# 📦 API Endpoints
+### Database Schema
 
-## 🗂️ Category APIs
+  * *Categories:* id (PK), name (Unique).
+  * *Products:* id (PK), name, price, category_id (FK).
+  * *Relationship:* *One-to-Many* (One Category contains many Products).
 
-| Method | Endpoint                 | Description                 |
-| ------ | ------------------------ | --------------------------- |
-| POST   | `/api/categories`        | Create category             |
-| GET    | `/api/categories?page=1` | Get categories (pagination) |
-| GET    | `/api/categories/{id}`   | Get category by ID          |
-| PUT    | `/api/categories/{id}`   | Update category             |
-| DELETE | `/api/categories/{id}`   | Delete category             |
+### Key Features
 
----
+  * *Pagination:* Implemented using limit and offset for optimized data fetching.
+  * *Data Validation:* Strict schema enforcement using *Pydantic*.
+  * *ORM Logic:* Handles complex relationships; products automatically return nested category objects.
+  * *Error Handling:* Custom exception handlers for 404s and validation errors.
 
-## 📦 Product APIs
+-----
 
-| Method | Endpoint               | Description               |
-| ------ | ---------------------- | ------------------------- |
-| POST   | `/api/products`        | Create product            |
-| GET    | `/api/products?page=1` | Get products (pagination) |
-| GET    | `/api/products/{id}`   | Get product by ID         |
-| PUT    | `/api/products/{id}`   | Update product            |
-| DELETE | `/api/products/{id}`   | Delete product            |
+## 🧪 Testing Workflow
 
----
-
-# 🔗 Relationship Requirement
-
-While fetching a product:
-
-✔ Product details
-✔ Associated category details
-
-### Example Response
-
-```json
-{
-  "id": 8,
-  "name": "FormalShoes",
-  "price": 1400,
-  "category": {
-    "id": 16,
-    "name": "Footwear"
-  }
-}
-```
-
----
-
-# 🗄️ Database Design
-
-## Categories Table
-
-* id (Primary Key)
-* name (Unique)
-
-## Products Table
-
-* id (Primary Key)
-* name
-* price
-* category_id (Foreign Key)
-
----
-
-## 🔁 Relationship
-
-* One Category → Many Products
-* One Product → One Category
-
----
-
-# 🧠 Key Concepts Implemented
-
-* SQLAlchemy ORM
-* Foreign Key Relationships
-* Pagination (offset & limit)
-* API validation using Pydantic
-* Exception handling
-
----
-
-# 🧪 Testing
-
-All APIs were tested using **Postman**.
-
----
-
-# 🏁 Conclusion
-
-This project demonstrates backend development using FastAPI with:
-
-* Clean architecture
-* Database integration
-* Scalable API design
-
----
+1.  *Swagger UI:* Navigate to /docs for interactive testing.
+2.  *Order of Ops:* 1. Create Category ➡ 2. Create Product (using Category ID) ➡ 3. Test GET/PUT/DELETE.
