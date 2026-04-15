@@ -1,24 +1,35 @@
 import os
-from platform import machine
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
-from sqlalchemy.orm import sessionmaker,declarative_base
+from sqlalchemy.orm import sessionmaker, declarative_base
 
-load_dotenv()  # Load environment from .env file
+load_dotenv()
 
-DATABASE_URL=os.getenv("DATABASE_URL")  #Get Database URL from .env
-print(f"Using Database URL: {DATABASE_URL}")  
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-engine=create_engine(DATABASE_URL)  #Create Database Engine
+# Define SSL arguments for Aiven
+# 'ssl_verify_identity': True ensures you are connecting to the actual Aiven server
+connect_args = {
+    "ssl": {
+        "ssl_mode": "REQUIRED"
+    }
+}
 
-SessionLocal=sessionmaker(autocommit=False,autoflush=False,bind=engine)  #Create Session Local
+# Create engine with connect_args
+engine = create_engine(
+    DATABASE_URL, 
+    connect_args=connect_args,
+    echo=False  # Set to True if you want to see the SQL logs
+)
 
-# Base class for models
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 try:
     with engine.connect() as connection:
-        connection.execute(text("SELECT 1"))
+        # Use .scalar() or .execute()
+        result = connection.execute(text("SELECT 1"))
         print("✅ Database connected successfully")
 except Exception as e:
-    print("❌ Database connection failed:", e)
+    print("❌ Database connection failed:")
+    print(f"Error details: {e}")
