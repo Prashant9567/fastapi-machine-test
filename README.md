@@ -37,17 +37,17 @@ API Documentation
 
 7. API Endpoints
     1. Category APIs
-        POST /api/categories
-        GET /api/categories?page=1
-        GET /api/categories/{id}
-        PUT /api/categories/{id}
-        DELETE /api/categories/{id}
+         Add Category: POST /api/categories
+        View pagination: GET /api/categories?page=1
+        View by ID : GET /api/categories/{id}
+        Update Category : PUT /api/categories/{id}
+        Delete : DELETE /api/categories/{id}
     2. Product APIs
-        POST /api/products
-        GET /api/products?page=1
-        GET /api/products/{id}
-        PUT /api/products/{id}
-        DELETE /api/products/{id}
+        Add Product: POST /api/products
+        View Pagination : GET /api/products?page=1
+        View by ID: GET /api/products/{id}
+        Update By ID : PUT /api/products/{id}
+        Delete : DELETE /api/products/{id}
 
 
 8. Database Design Details
@@ -62,3 +62,6 @@ API Documentation
 9. Relationship
         One Category → Many Products
         One Product → One Category
+
+
+Note:I Tested All API in POSTMAN
